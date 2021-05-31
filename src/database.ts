@@ -9,8 +9,8 @@ export default async function connect() {
         useUnifiedTopology: true,
       }
     );
-    console.log("db connected");
+    console.log("database connected");
   } catch (err) {
-    console.log(err);
+    console.log(err, "Something went wrong with the database");
   }
 }
