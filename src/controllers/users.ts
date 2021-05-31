@@ -10,3 +10,8 @@ exports.newUser = async (req: Request, res: Response) => {
   await newUser.save();
   res.json({ msg: `${newUser} saved` });
 };
+exports.getAll = async (req: Request, res: Response) => {
+  const allUsers = await User.find();
+  console.log(allUsers);
+  res.send(allUsers);
+};
