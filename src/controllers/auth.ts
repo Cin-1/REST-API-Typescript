@@ -30,7 +30,7 @@ exports.authUser = async (req: Request, res: Response) => {
       },
       (error, token) => {
         if (error) throw error;
-        res.json({ token: token });
+        res.status(200).json({ info: { token } });
       }
     );
   } catch (error) {
