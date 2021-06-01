@@ -1,5 +1,4 @@
 import { now } from "mongoose";
-
 let mongoose = require("mongoose");
 
 let Schema = mongoose.Schema;
@@ -15,6 +14,13 @@ let userSchema = new Schema(
   },
   { timestamps: true }
 );
+userSchema.methods.toJSON = function () {
+  let obj = this.toObject();
+  delete obj.password;
+  delete obj.createdAt;
+  delete obj.updatedAt;
+  return obj;
+};
 
 var User = mongoose.model("User", userSchema);
 
