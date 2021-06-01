@@ -4,6 +4,8 @@ import cors from "cors";
 
 import routerIndex from "./routes";
 import routerUsers from "./routes/users";
+import authRoutes from "./routes/auth";
+import emailRoutes from "./routes/email";
 
 class App {
   app: express.Application;
@@ -28,6 +30,8 @@ class App {
   routes() {
     this.app.use(routerIndex);
     this.app.use("/users", routerUsers);
+    this.app.use("/auth", authRoutes);
+    this.app.use("/email", emailRoutes);
   }
   start() {
     this.app.listen(this.app.get("port"), () => {
