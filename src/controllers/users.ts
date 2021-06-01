@@ -45,7 +45,6 @@ exports.updateUser = async (req: Request, res: Response) => {
   const { password } = req.body;
   const salt = await bcryptjs.genSalt(10);
   if (user.password) user.password = await bcryptjs.hash(password, salt);
-  console.log(user);
   try {
     let userCheck = await User.findById(id);
     if (!userCheck) {
@@ -56,7 +55,6 @@ exports.updateUser = async (req: Request, res: Response) => {
       { $set: user },
       { new: true }
     );
-    delete userUpdated.password;
     res.send(userUpdated);
   } catch (error) {
     console.log(error);
@@ -76,5 +74,22 @@ exports.deleteUser = async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Server error");
+  }
+};
+
+exports.updateEmail = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  let { email } = req.body;
+
+  try {
+    const emailUpdated = await User.findByIdAndUpdate(
+      id,
+      { $push: { emails: email } },
+      { new: true }
+    );
+    res.send(emailUpdated);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error" });
   }
 };
