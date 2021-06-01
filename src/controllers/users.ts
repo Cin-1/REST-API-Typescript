@@ -1,30 +1,26 @@
 const User = require("../model/user");
 const bcryptjs = require("bcryptjs");
-const { validationResult } = require("express-validator");
 import { Request, Response } from "express";
 
 exports.newUser = async (req: Request, res: Response) => {
-  const { email, password, name, last_name, emails, phones, birthday } =
-    req.body;
-  // let checkEmail = await User.findOne({ email });
-  // if (!checkEmail) {
-  //   console.log(checkEmail);
-  //   return res.status(404).json({ msg: "User is already registered" });
-  // }
+  const { password, name, last_name, email, phone, birthday } = req.body;
+
+  let checkEmail = await User.findOne({ emails: email });
+  if (checkEmail) {
+    return res.status(400).json({ msg: "User is already registered" });
+  }
   const salt = await bcryptjs.genSalt(10);
   const hashPassword = await bcryptjs.hash(password, salt);
   const user = {
-    email,
+    emails: email,
     password: hashPassword,
     name,
     last_name,
-    emails,
-    phones,
+    phones: phone,
     birthday,
   };
   const newUser = new User(user);
   await newUser.save();
-  delete newUser.password;
   res.send(newUser);
 };
 exports.getAll = async (req: Request, res: Response) => {
@@ -74,22 +70,5 @@ exports.deleteUser = async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Server error");
-  }
-};
-
-exports.updateEmail = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  let { email } = req.body;
-
-  try {
-    const emailUpdated = await User.findByIdAndUpdate(
-      id,
-      { $push: { emails: email } },
-      { new: true }
-    );
-    res.send(emailUpdated);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Server error" });
   }
 };
