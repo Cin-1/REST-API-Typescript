@@ -29,3 +29,25 @@ exports.addEmail = async (req: Request, res: Response) => {
     res.status(500).json({ error: { msg: "Server error" } });
   }
 };
+
+exports.deleteEmail = async (req: Request, res: Response) => {
+  let { email } = req.body;
+  try {
+    let checkUser = await User.findOne({ emails: email });
+    if (!checkUser) {
+      return res.status(400).json({ error: { msg: "Email does not exists" } });
+    }
+    const id = checkUser.id;
+    console.log(id);
+    const emailDeleted = await User.updateOne(
+      { _id: id },
+      { $pull: { emails: email } }
+    );
+    res
+      .status(200)
+      .json({ data: { info: emailDeleted }, msg: "Email succesfuly deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: { msg: "Server error" } });
+  }
+};
