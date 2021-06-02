@@ -1,10 +1,9 @@
 require("dotenv").config();
 const User = require("../model/user");
 const { emailvalid } = require("../validate");
-const { sendEmail } = require("../mails");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_KEY);
-const { Msg } = require("../helper/mail");
+const { Msg } = require("../helper");
 import { Request, Response } from "express";
 
 exports.addEmail = async (req: Request, res: Response) => {
