@@ -84,3 +84,22 @@ exports.deleteEmail = async (req: Request, res: Response) => {
     res.status(500).json({ error: { msg: "Server error" } });
   }
 };
+exports.sendEmail = async (req: Request, res: Response) => {
+  let { to, text, subject } = req.body;
+  console.log(to, text, subject);
+  try {
+    const msg = new Msg(to, process.env.EMAIL, subject, text);
+    sgMail.send(msg, function (err, result) {
+      if (err) {
+        res
+          .status(400)
+          .json({ error: { msg: "Email Not Sent Error Occured" } });
+      } else {
+        res.status(200).json({ msg: "Email was Sent" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: { msg: "Server error" } });
+  }
+};

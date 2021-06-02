@@ -5,5 +5,6 @@ const emailRoutes = Router();
 
 emailRoutes.put("/add/:id", emailController.addEmail);
 emailRoutes.delete("/delete", emailController.deleteEmail);
+emailRoutes.post("/send", emailController.sendEmail);
 
 export default emailRoutes;
