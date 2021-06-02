@@ -3,7 +3,7 @@ const emailController = require("../controllers/email");
 
 const emailRoutes = Router();
 
-emailRoutes.put("/add/:id", emailController.addEmail);
+emailRoutes.patch("/add/:id", emailController.addEmail);
 emailRoutes.delete("/delete", emailController.deleteEmail);
 emailRoutes.post("/send", emailController.sendEmail);
 
