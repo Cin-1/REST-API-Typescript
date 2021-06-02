@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 module.exports = function (req: Request, res: Response, next: NextFunction) {
   const token = <string>req.header("x-auth-token");
   if (!token) {
-    res.status(401).json({ msg: "401 Unauthorized, no token" });
+    res.status(401).json({ error: { msg: "401 Unauthorized, no token" } });
   }
   let jwtPayload;
   try {
@@ -14,7 +14,7 @@ module.exports = function (req: Request, res: Response, next: NextFunction) {
     return next();
   } catch (error) {
     console.log(error);
-    res.status(401).json({ msg: "Invalid token" });
+    res.status(401).json({ error: { msg: "Invalid token" } });
     return;
   }
 };
