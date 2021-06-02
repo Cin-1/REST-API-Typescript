@@ -1,5 +1,10 @@
+require("dotenv").config();
 const User = require("../model/user");
 const { emailvalid } = require("../validate");
+const { sendEmail } = require("../mails");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_KEY);
+const { Msg } = require("../helper/mail");
 import { Request, Response } from "express";
 
 exports.addEmail = async (req: Request, res: Response) => {
@@ -21,6 +26,20 @@ exports.addEmail = async (req: Request, res: Response) => {
       { $push: { emails: email } },
       { new: true }
     );
+    const msg = new Msg(
+      "cinthiapardos@gmail.com",
+      process.env.EMAIL,
+      "Email updated",
+      "Your email has been added successfully "
+    );
+    console.log(msg);
+    sgMail.send(msg, function (err, result) {
+      if (err) {
+        console.log("Email Not Sent Error Occured");
+      } else {
+        console.log("Email was Sent");
+      }
+    });
     res
       .status(200)
       .json({ data: { info: emailUpdated }, msg: "Email succesfuly added" });
@@ -43,6 +62,20 @@ exports.deleteEmail = async (req: Request, res: Response) => {
       { _id: id },
       { $pull: { emails: email } }
     );
+    const msg = new Msg(
+      "cinthiapardos@gmail.com",
+      process.env.EMAIL,
+      "Email deleted",
+      "Your email has been deleted successfully "
+    );
+    console.log(msg);
+    sgMail.send(msg, function (err, result) {
+      if (err) {
+        console.log("Email Not Sent Error Occured");
+      } else {
+        console.log("Email was Sent");
+      }
+    });
     res
       .status(200)
       .json({ data: { info: emailDeleted }, msg: "Email succesfuly deleted" });
