@@ -8,5 +8,6 @@ userRoutes.get("/all", userController.getAll);
 userRoutes.get("/active/:id", userController.getActive);
 userRoutes.delete("/delete/:id", userController.deleteUser);
 userRoutes.patch("/update/:id", userController.updateUser);
+userRoutes.get("/age/:id", userController.getActualAgeById);
 
 export default userRoutes;
