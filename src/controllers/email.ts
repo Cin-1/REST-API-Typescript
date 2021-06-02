@@ -62,7 +62,7 @@ exports.deleteEmail = async (req: Request, res: Response) => {
       { $pull: { emails: email } }
     );
     const msg = new Msg(
-      "cinthiapardos@gmail.com",
+      email,
       process.env.EMAIL,
       "Email deleted",
       "Your email has been deleted successfully "
