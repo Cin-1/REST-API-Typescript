@@ -1,9 +1,11 @@
 const User = require("../model/user");
 const bcryptjs = require("bcryptjs");
 import { Request, Response } from "express";
+import { calculateAge } from "../helper";
 
 exports.newUser = async (req: Request, res: Response) => {
   const { password, name, last_name, email, phone, birthday } = req.body;
+
   try {
     let checkEmail = await User.findOne({ emails: email });
     if (checkEmail) {
@@ -86,6 +88,24 @@ exports.deleteUser = async (req: Request, res: Response) => {
     res.status(200).json({ data: { info: userD }, msg: ` User ${id} Deleted` });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: { msg: "Server error" } });
+  }
+};
+exports.getActualAgeById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: { msg: "User does not exists" } });
+    }
+    const timeBirthday = Date.parse(user.birthday);
+    const age = calculateAge(timeBirthday);
+    res.status(200).json({
+      data: { info: user, age: age },
+      msg: `User is ${age} years old `,
+    });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error: { msg: "Server error" } });
   }
 };
