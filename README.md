@@ -5,8 +5,6 @@
     Agregar CORS
     Agregar morgan para logs
     Hacer conexión a bdd mongodb usando mongoose
-    Cadena de conexión de mongodb :
-    mongodb+srv://asap:37tqVtjPT4hhW9k7jKQKFwrA@cluster0.iss6b.mongodb.net/asap?retryWrites=true&w=majority
     La api debe tener seguridad con JWT
 
 1. Se debe crear un modelo llamado Users con los siguientes campos
